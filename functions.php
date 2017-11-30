@@ -20,3 +20,16 @@ function custom_field_excerpt($field = '') {
 	return apply_filters('the_excerpt', $text);
 }
 ?>
+
+<!--
+	2. добавление кастомных размеров шрифтов
+	в стандартный редактор вордпресс,
+	только при использовании плагина tiny_mce
+	-->
+<?php
+add_filter( 'tiny_mce_before_init', 'wpex_mce_google_fonts_array' );
+function wpex_mce_google_fonts_array( $initArray ) {
+    $initArray['fontsize_formats'] = '8px 9px 10px 11px 12px 13px 14px 15px 16px 17px 18px 19px 20px';
+    return $initArray;
+}
+?>
