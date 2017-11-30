@@ -33,3 +33,30 @@ function wpex_mce_google_fonts_array( $initArray ) {
     return $initArray;
 }
 ?>
+
+<!-- 3. ajax подгрузка контента -->
+<?php function true_load_posts(){
+	$args = unserialize(stripslashes($_POST['query']));
+	$args['paged'] = $_POST['page'] + 1;
+	$args['post_status'] = 'publish';
+	$q = new WP_Query($args);
+	if( $q->have_posts() ):
+		while($q->have_posts()): $q->the_post();
+			$history_text = get_field('prev-text'); //кастомные поля acf
+			$query = $q->query;
+			$type_page = $query["post_type"];
+
+			if($type_page == 'products'):
+				$reviewsImg = get_field('img');
+?>
+				<!-- то что выводится -->
+<?php		endif;
+		endwhile;
+	endif;
+	wp_reset_postdata();
+	die();
+}
+
+add_action('wp_ajax_loadmore', 'true_load_posts');
+add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
+?>
